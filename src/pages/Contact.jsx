@@ -1,0 +1,4 @@
+import React,{useState} from 'react'
+import { API_BASE } from '../config'
+export default function Contact(){ const [status,setStatus]=useState(''); async function handle(e){ e.preventDefault(); const fd=new FormData(e.target); const body=Object.fromEntries(fd.entries()); setStatus('Sending...'); try{ const r=await fetch(API_BASE + '/api/contact',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); if(!r.ok) throw new Error('Failed'); setStatus('Message sent — thank you!'); e.target.reset(); }catch(err){ setStatus('Could not send message. Try emailing us.')}}
+ return (<div><h1>Contact</h1><form onSubmit={handle} className="contact-form"><label>Name<input name="name" required /></label><label>Email<input name="email" type="email" required /></label><label>Message<textarea name="message" rows="4" required></textarea></label><button type="submit">Send</button></form><div>{status}</div></div>)}
